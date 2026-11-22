@@ -1,0 +1,45 @@
+name: Complete Edition Runtime Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - complete-edition-integration
+    paths:
+      - "skills/ton-stickman-cinematic/vendor/upstream/**"
+      - ".github/workflows/complete-edition-runtime.yml"
+
+jobs:
+  upstream-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: skills/ton-stickman-cinematic/vendor/upstream/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Install upstream Node dependencies
+        working-directory: skills/ton-stickman-cinematic/vendor/upstream
+        run: npm ci
+      - name: Run upstream Node test suite
+        working-directory: skills/ton-stickman-cinematic/vendor/upstream
+        run: npm test
+      - name: Run upstream Python tests
+        working-directory: skills/ton-stickman-cinematic/vendor/upstream
+        run: python -m unittest discover -s tests -p '*_test.py'
+      - name: Report toolchain versions
+        run: |
+          node --version
+          npm --version
+          python --version
+          ffmpeg -version | head -n 1
