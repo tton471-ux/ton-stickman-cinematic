@@ -15,21 +15,20 @@ Verified source-tree counts at this snapshot:
 - Model Engine: A1–A8.
 - Code Engine: B1–B7.
 - Exact names and preferred-style flags: style-registry.json.
-- Per-style reference routes: UPSTREAM-STYLE-SOURCE-MAP.md.
+- Per-style source routing: UPSTREAM-STYLE-SOURCE-MAP.md.
 
-## Import status
+## Integration status on complete-edition-integration
 
 | Category | Status |
 |---|---|
-| Style registry A1–A8 / B1–B7 | Added to integration branch |
-| Upstream style source map | Added to integration branch |
-| Upstream Skill source | Existing partial reference only; full snapshot import pending |
-| Style/reference Markdown | Existing partial set; complete 75-file import pending |
-| Scripts | 57 upstream files inventoried; not yet imported as a coherent source set |
-| Tests | 70 upstream files inventoried; not yet imported with fixtures |
+| Complete style registry A1–A8 / B1–B7 | Added |
+| Complete upstream Skill reference at pinned commit | Imported |
+| Style-specific and shared references | 46 of 75 upstream reference documents present in TON reference folder; full remaining reference audit pending |
+| Scripts | 57 inventoried; not yet imported as a coherent source set |
+| Tests | 70 inventoried; not yet imported with fixtures |
 | Binary style references and fonts | Not imported |
-| Large showcase media | Not imported; optional pack review pending |
-| Audio library | Kept separate; license and size review pending |
+| Large showcase media | Not imported; optional media pack review pending |
+| Audio library | Kept separate; rights and size review pending |
 | Runtime install/test | Not run in a local compatible environment |
 
-This inventory is a verified starting point, not a claim that the upstream source has already been fully mirrored. See COMPLETE-EDITION-ROADMAP.md for the staged import policy.
+The 46/75 figure is a path-presence count, not a statement that every upstream reference has been copied byte-for-byte; the TON folder also retains pre-existing TON-authored and earlier imported documents. Binary assets and optional audio packs require a separate binary-capable import and rights review.
