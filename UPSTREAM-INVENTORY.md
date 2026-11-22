@@ -1,34 +1,37 @@
 # Upstream source inventory
 
-Snapshot: kaomei/stickman-video-director@9431d3707bde52ba8eb17f31886b0892c763eeba
+Pinned upstream snapshot: `kaomei/stickman-video-director@9431d3707bde52ba8eb17f31886b0892c763eeba`.
 
-Verified source-tree counts at this snapshot:
+## Verified upstream source counts
+
 - Whole repository: 2,082 blob files.
-- Skill root (skills/directing-stickman-videos): 1,932 blob files.
+- Skill root: 1,932 blob files.
 - References: 75 files.
 - Scripts: 57 files.
-- Tests: 70 files.
-- Assets under the Skill root: 1,698 files, including optional audio and large example media.
+- Tests, fixtures and helpers: 70 files.
+- Skill assets: 1,698 files (includes images, fonts, videos, GIFs and optional audio collections).
 
-## Style families
+## TON integration status on `complete-edition-integration`
 
-- Model Engine: A1–A8.
-- Code Engine: B1–B7.
-- Exact names and preferred-style flags: style-registry.json.
-- Per-style source routing: UPSTREAM-STYLE-SOURCE-MAP.md.
+| Category | Status | Details |
+|---|---|---|
+| Style registry | Imported | A1–A8 and B1–B7, preferred styles retained |
+| Style reference documents | Imported | 75/75 reference Markdown files |
+| Upstream Skill instructions | Imported | Pinned source copy under vendor/upstream/SKILL.md |
+| Runtime scripts | Imported | 57/57 text scripts under vendor/upstream/scripts |
+| Runtime package manifests | Imported | package.json and package-lock.json |
+| Tests, fixtures and helpers | Imported | 70/70 under vendor/upstream/tests |
+| Full upstream source/assets | Linked | Pinned Git submodule at vendor/upstream-source |
+| CI validation workflow | Added | Node 22, Python 3.12, FFmpeg, npm test and Python unittest |
+| Runtime execution | Not yet verified | Requires successful CI/local execution |
+| Claude plugin release on main | Pending | Integration branch has not been merged |
 
-## Integration status on complete-edition-integration
+## Binary assets and submodule
 
-| Category | Status |
-|---|---|
-| Complete style registry A1–A8 / B1–B7 | Added |
-| Complete upstream Skill reference at pinned commit | Imported |
-| Upstream reference Markdown | 75 of 75 source reference files matched by filename in TON references |
-| Scripts | 57 inventoried; not yet imported as a coherent source set |
-| Tests | 70 inventoried; not yet imported with fixtures |
-| Binary style references and fonts | Not imported |
-| Large showcase media | Not imported; optional media pack review pending |
-| Audio library | Kept separate; rights and size review pending |
-| Runtime install/test | Not run in a local compatible environment |
+The GitHub text-file integration cannot safely transfer binary files. To preserve all upstream images, videos, GIFs, fonts, and other binary assets without corrupting them, the exact upstream repository commit is pinned as a Git submodule at `vendor/upstream-source`. Always clone with `--recurse-submodules` or run `git submodule update --init --recursive`.
 
-The reference count is based on exact filename matches against the pinned upstream tree. It does not imply that scripts, tests, binary assets, fonts, or optional media have been imported or validated.
+The submodule provides the complete upstream repository snapshot; the vendored text runtime and reference files provide the files directly used by the TON integration branch. Individual media/font/audio redistribution rights still require separate review. MIT source licensing does not automatically license every media asset.
+
+## Runtime validation
+
+The full upstream scripts and test sources are now present, but they have not yet been executed in a compatible local runtime in this chat. Use the workflow `.github/workflows/complete-edition-runtime.yml` or follow `skills/ton-stickman-cinematic/vendor/upstream/README.md`. Do not label a style production-ready until its CI checks and representative rendered output pass.
