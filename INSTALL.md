@@ -1,15 +1,26 @@
 # Installation
 
-This repository is being prepared for two installation routes.
+## Status
+
+The repository is under active packaging work. Do not treat the current main branch as a verified one-click installation yet.
 
 ## Claude Code
 
-The intended end state is a Claude Code plugin/skill installed from this GitHub repository. The plugin manifest and skill directory will be added after the source audit.
+The intended distribution is a Claude Code plugin containing:
+- `.claude-plugin/plugin.json`
+- `skills/ton-stickman-cinematic/SKILL.md`
+- the selected-style reference documents
+
+The B1 local renderer is a separate runtime layer. It requires Node.js 20+, FFmpeg/FFprobe, `@napi-rs/canvas`, `sharp`, and the complete licensed font/reference asset set. A plugin manifest alone does not install those system dependencies.
 
 ## Claude Web
 
-A dedicated package builder will create a compact upload archive. It will include only the files required by the skill and the selected styles (A2, A3, A7, A8), subject to source availability and license checks.
+A dedicated compact ZIP will be provided after the skill package passes:
+- required file and reference checks
+- archive-size and file-count checks
+- manifest/ZIP structure validation
+- selected-style dependency checks
 
-## Current status
+## Important
 
-Installation packages are not ready yet. Do not attempt to install this bootstrap repository until the plugin manifest and skill files have been added and tested.
+Do not upload API keys, private credentials, personal recordings, or large optional audio collections to this public repository. Do not redistribute sample videos, fonts, or audio unless their individual licenses permit it.
