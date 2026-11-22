@@ -62,6 +62,9 @@ jobs:
       - name: Install upstream Node dependencies
         working-directory: skills/ton-stickman-cinematic/vendor/upstream
         run: npm ci
+      - name: Run focused B4 typography tests
+        working-directory: skills/ton-stickman-cinematic/vendor/upstream
+        run: node --test tests/b4-typography-review.test.mjs
       - name: Run upstream Node test suite
         working-directory: skills/ton-stickman-cinematic/vendor/upstream
         run: npm test
