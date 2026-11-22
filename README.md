@@ -21,7 +21,7 @@ TON preferred styles remain **A2, A3, A7, A8 and B1**. They are favorites, not t
 
 The complete-edition-integration branch has been created. It now contains a complete A1–A8 / B1–B7 style registry, upstream inventory and integration roadmap. The plugin Skill instructions have been updated to recognize the complete library.
 
-**Important:** This is the integration foundation, not a completed full import. Upstream scripts/tests, all style references, binary images/fonts/media, and runtime validation are still pending. No runtime is claimed operational until installed and tested in a compatible local environment.
+**Important:** This is the integration foundation, not a completed full import. The 75 upstream reference documents are now present by matching filename. Upstream scripts/tests, binary images/fonts/media, and runtime validation are still pending. No runtime is claimed operational until installed and tested in a compatible local environment.
 
 ## Upstream source and licensing
 
