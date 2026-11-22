@@ -1,39 +1,36 @@
-# TON STICKMAN CINEMATIC
+# TON STICKMAN CINEMATIC — Complete Edition
 
-A user-owned Claude skill/plugin project for cinematic 2D stickman production.
+A TON-owned Claude plugin/skill project integrating the complete upstream style library while preserving TON's preferred style directions.
 
-## Selected visual directions
+## Complete style library
 
-- **A2** — Modern Beanie Zeke (Modern Studio Tech / Cinematic Story)
-- **A3** — Prehistoric Hand-Drawn / Dark Comedy
-- **A7** — Rubber Hose Animation
-- **A8** — Studio Ghibli-inspired hand-drawn animation direction
-- **B1** — Minimal Line Art / hand-drawn stickman (local code-rendered workflow)
+**Model Engine (A):** A1 Classic Minimalist (Light/Dark), A2 Modern Beanie (2A Studio Tech / 2B Cinematic Story), A3 Prehistoric Hand-Drawn / Dark Comedy, A4 Cozy Storytelling, A5 Historical Cartoon, A6 Amber Noir, A7 Rubber Hose Animation, A8 Studio Ghibli Style.
 
-## Current repository contents
+**Code Engine (B):** B1 Minimal Line Art, B2 Colorful Hand-Drawn, B3 Retro TV, B4 Survival Thriller, B5 Avatar Explainer, B6 Dynamic Meme, B7 Pixel Theater.
 
-- Main skill instructions and upstream reference notes.
-- Curated production guides for all five selected directions.
-- A7 prompt-lock and workflow manifests.
-- B1 approval/evidence manifests.
-- Runtime dependency declaration and upstream MIT license notice.
+TON preferred styles remain **A2, A3, A7, A8 and B1**. They are favorites, not the limits of the complete library.
 
-## Build status
+## Integration architecture
 
-**Core documentation and selected-style manifests are imported. Runtime packaging and installation validation are still in progress.** This repository is not yet a verified one-click installation.
+- **TON Core:** story, characters, storyboard, prompts, audio timeline, continuity, QA and checkpoints.
+- **Style Library:** independent style rules, references, acceptance criteria and assets for A1–A8 / B1–B7.
+- **Runtime Engine:** local scripts, tests, dependencies, fonts and FFmpeg integration.
+- **Optional Media Packs:** large showcase videos and bundled audio remain separate until size and individual rights are reviewed.
 
-The upstream B1 runtime requires Node.js 20+, FFmpeg/FFprobe, `@napi-rs/canvas`, `sharp`, and licensed font/reference assets. Some original media assets are binary files and cannot be imported through the current text-only GitHub editing route. The build process must include and verify those assets before B1 can be called fully operational.
+## Current build status
 
-## Installation targets
+The complete-edition-integration branch has been created. It now contains a complete A1–A8 / B1–B7 style registry, upstream inventory and integration roadmap. The plugin Skill instructions have been updated to recognize the complete library.
 
-1. Claude Code plugin/skill installed from this repository.
-2. A separate compact ZIP for Claude Web skill upload.
+**Important:** This is the integration foundation, not a completed full import. Upstream scripts/tests, all style references, binary images/fonts/media, and runtime validation are still pending. No runtime is claimed operational until installed and tested in a compatible local environment.
 
-The Claude Web ZIP must be checked for file count, archive size, manifest structure, and required references before release.
+## Upstream source and licensing
 
-## License and third-party material
+- Upstream: https://github.com/kaomei/stickman-video-director
+- Inspected snapshot: 9431d3707bde52ba8eb17f31886b0892c763eeba
+- License: MIT; full upstream license is retained in licenses/UPSTREAM-MIT-LICENSE.txt.
+- Individual media, font and audio licenses must be checked separately; MIT source licensing does not automatically grant redistribution rights for every asset.
 
-The upstream project license is preserved at [licenses/UPSTREAM-MIT-LICENSE.txt](licenses/UPSTREAM-MIT-LICENSE.txt). This does not automatically grant redistribution rights to every bundled media file, font, sample video, or third-party audio asset. Keep optional audio libraries and user-provided media out of public releases unless their individual rights are verified.
+See COMPLETE-EDITION-ROADMAP.md, UPSTREAM-INVENTORY.md and style-registry.json.
 
 ## Repository
 
