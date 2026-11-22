@@ -59,7 +59,4 @@ jobs:
           echo "Reference files: $(find "$target_dir/references" -type f | wc -l)"
           echo "Example files: $(find "$target_dir/examples" -type f | wc -l)"
       - run: npm ci
-      - name: Run focused B4 typography tests
-        run: node --test tests/b4-typography-review.test.mjs
-      - name: Run complete upstream test suite
-        run: npm test
+      - run: npm test
