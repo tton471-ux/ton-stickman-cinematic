@@ -26,7 +26,7 @@ function drawFixture(p,{staticBody=false,staticCaption=false,movingBackground=fa
     const show=id=>!omitIds.includes(id)&&(!focusIds.length||focusIds.includes(id));
     if(show('body-title')){
       const x=subtleSettle?15:staticBody?20:t<.25?5+60*t:t<.5?20-(t-.25)*20:15;
-      ctx.save();if(subtleSettle){const scale=1+.035*(staticBody?1:1-Math.min(1,t/.5));ctx.translate(130,70);ctx.scale(scale,scale);ctx.translate(-130,-70);}
+      ctx.save();if(subtleSettle){const scale=1+(staticBody?0:.035*Math.min(1,t/.5));ctx.translate(130,70);ctx.scale(scale,scale);ctx.translate(-130,-70);}
       ctx.globalAlpha=staticBody||subtleSettle?1:Math.min(1,.4+t*2.4);ctx.font='bold 25px sans-serif';ctx.fillStyle='#f9ebd4';ctx.fillText('A REAL CHANGE',x+15,70);ctx.restore();
     }
     for(const [i,c] of p.captions.entries())if(t>=c.start&&t<c.end&&show('caption-'+i)){
