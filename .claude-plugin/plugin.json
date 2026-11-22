@@ -1,0 +1,8 @@
+{
+  "name": "ton-stickman-cinematic",
+  "version": "0.1.0",
+  "description": "TON STICKMAN CINEMATIC: a dual-installation stickman video production skill for Claude Code and Claude Web.",
+  "author": {
+    "name": "TON"
+  }
+}
