@@ -17,7 +17,7 @@ const write=(f,x)=>fs.writeFileSync(f,JSON.stringify(x,null,2)+'\n');
 function run(args){const r=spawnSync(ffmpeg,['-v','error',...args],{encoding:'utf8'});assert.equal(r.status,0,r.stderr);}
 function project(){return {style:'B4',width:320,height:180,fps:12,duration:1.5,rangeEnd:1.5,fingerprint:'synthetic-engineering-fixture-v1',opening:{user_override:'Synthetic test only'},
   shots:[{id:'body-shot',start:0,end:1.5,layers:[{id:'body-title',type:'text',text:'A REAL CHANGE'}]}],captions:[{start:0,end:1.5,text:'A complete semantic cue.'}],
-  typography:{author_id:'synthetic-author',moments:[{id:'body-moment',shot:'body-shot',layer_ids:['body-title'],region:{x:0,y:0,w:1280,h:720},times:{entry:0,mid:.25,settled:.5,hold:17/12},intent:'Synthetic visual change is explained by this title.',treatment:'Whole semantic block enters, settles, then holds.'}]}};}
+  typography:{author_id:'synthetic-author',moments:[{id:'body-moment',shot:'body-shot',layer_ids:['body-title'],region:{x:80,y:160,w:900,h:300},times:{entry:0,mid:.25,settled:.5,hold:17/12},intent:'Synthetic visual change is explained by this title.',treatment:'Whole semantic block enters, settles, then holds.'}]}};}
 function drawFixture(p,{staticBody=false,staticCaption=false,movingBackground=false,subtleSettle=false}={}) {
   const canvas=createCanvas(p.width,p.height),ctx=canvas.getContext('2d');
   return (t,{focusIds=[],omitIds=[]}={})=>{
