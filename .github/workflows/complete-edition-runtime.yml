@@ -28,6 +28,27 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
+      - name: Restore pinned upstream assets and references
+        env:
+          UPSTREAM_REPOSITORY: https://github.com/kaomei/stickman-video-director.git
+          UPSTREAM_COMMIT: 9431d3707bde52ba8eb17f31886b0892c763eeba
+        run: |
+          set -euo pipefail
+          source_dir="$RUNNER_TEMP/stickman-upstream"
+          target_dir="$GITHUB_WORKSPACE/skills/ton-stickman-cinematic/vendor/upstream"
+          git init "$source_dir"
+          git -C "$source_dir" remote add origin "$UPSTREAM_REPOSITORY"
+          git -C "$source_dir" fetch --depth 1 origin "$UPSTREAM_COMMIT"
+          git -C "$source_dir" checkout --detach FETCH_HEAD
+          test "$(git -C "$source_dir" rev-parse HEAD)" = "$UPSTREAM_COMMIT"
+          test -d "$source_dir/assets"
+          test -d "$source_dir/references"
+          mkdir -p "$target_dir/assets" "$target_dir/references"
+          cp -a "$source_dir/assets/." "$target_dir/assets/"
+          cp -a "$source_dir/references/." "$target_dir/references/"
+          echo "Restored pinned upstream assets and references from $UPSTREAM_COMMIT"
+          echo "Asset files: $(find "$target_dir/assets" -type f | wc -l)"
+          echo "Reference files: $(find "$target_dir/references" -type f | wc -l)"
       - name: Install upstream Node dependencies
         working-directory: skills/ton-stickman-cinematic/vendor/upstream
         run: npm ci
