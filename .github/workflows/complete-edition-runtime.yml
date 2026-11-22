@@ -8,6 +8,12 @@ on:
     paths:
       - "skills/ton-stickman-cinematic/vendor/upstream/**"
       - ".github/workflows/complete-edition-runtime.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "skills/ton-stickman-cinematic/vendor/upstream/**"
+      - ".github/workflows/complete-edition-runtime.yml"
 
 jobs:
   upstream-runtime:
@@ -25,7 +31,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install Python media dependencies
-        run: python -m pip install numpy==2.0.2 Pillow==11.3.0 opencv-python-headless==4.13.0.92
+        run: python3 -m pip install numpy==2.0.2 Pillow==11.3.0 opencv-python-headless==4.13.0.92
       - name: Install FFmpeg
         run: |
           sudo apt-get update
@@ -59,6 +65,9 @@ jobs:
           echo "Asset files: $(find "$target_dir/assets" -type f | wc -l)"
           echo "Reference files: $(find "$target_dir/references" -type f | wc -l)"
           echo "Example files: $(find "$target_dir/examples" -type f | wc -l)"
+          test -s "$target_dir/examples/b5-mei-event-relay/README.md"
+          test -s "$target_dir/examples/b5-mei-event-relay/new-story-stage.cjs"
+          test -s "$target_dir/examples/b5-mei-event-relay/stage.cjs"
       - name: Install upstream Node dependencies
         working-directory: skills/ton-stickman-cinematic/vendor/upstream
         run: npm ci
@@ -67,10 +76,10 @@ jobs:
         run: npm test
       - name: Run upstream Python tests
         working-directory: skills/ton-stickman-cinematic/vendor/upstream
-        run: python -m unittest discover -s tests -p '*_test.py'
+        run: python3 -m unittest discover -s tests -p '*_test.py'
       - name: Report toolchain versions
         run: |
           node --version
           npm --version
-          python --version
+          python3 --version
           ffmpeg -version | head -n 1
