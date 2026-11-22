@@ -1,4 +1,4 @@
-name: Complete Edition Runtime Tests # run latest integration diagnostics
+name: Complete Edition Runtime Tests # run latest B4 fixture baseline diagnostics
 
 on:
   workflow_dispatch:
