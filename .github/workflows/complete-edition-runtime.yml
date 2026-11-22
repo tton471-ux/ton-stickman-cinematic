@@ -29,7 +29,8 @@ jobs:
       - name: Install FFmpeg
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core fonts-liberation2
+          fc-match sans-serif
       - name: Restore pinned upstream assets and references
         env:
           UPSTREAM_REPOSITORY: https://github.com/kaomei/stickman-video-director.git
