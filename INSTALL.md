@@ -1,26 +1,38 @@
 # Installation
 
-## Status
+## Claude Web / Claude Desktop
 
-The repository is under active packaging work. Do not treat the current main branch as a verified one-click installation yet.
+1. Open **Customize → Plugins**.
+2. Choose **Add → Add marketplace**.
+3. Enter this public GitHub repository: `tton471-ux/ton-stickman-cinematic`.
+4. Find **ton-stickman-cinematic** in the marketplace and choose **Add**.
 
-## Claude Code
+Claude's plugin marketplace supports adding a Git repository directly. The plugin's skills then become available in Claude chat and other supported Claude surfaces.
 
-The intended distribution is a Claude Code plugin containing:
-- `.claude-plugin/plugin.json`
-- `skills/ton-stickman-cinematic/SKILL.md`
-- the selected-style reference documents
+## Claude Code (terminal)
 
-The B1 local renderer is a separate runtime layer. It requires Node.js 20+, FFmpeg/FFprobe, `@napi-rs/canvas`, `sharp`, and the complete licensed font/reference asset set. A plugin manifest alone does not install those system dependencies.
+Run these commands inside Claude Code:
 
-## Claude Web
+```text
+/plugin marketplace add tton471-ux/ton-stickman-cinematic
+/plugin install ton-stickman-cinematic@ton-stickman-cinematic-marketplace
+```
 
-A dedicated compact ZIP will be provided after the skill package passes:
-- required file and reference checks
-- archive-size and file-count checks
-- manifest/ZIP structure validation
-- selected-style dependency checks
+If using the CLI outside a Claude Code session:
 
-## Important
+```bash
+claude plugin marketplace add tton471-ux/ton-stickman-cinematic
+claude plugin install ton-stickman-cinematic@ton-stickman-cinematic-marketplace
+```
 
-Do not upload API keys, private credentials, personal recordings, or large optional audio collections to this public repository. Do not redistribute sample videos, fonts, or audio unless their individual licenses permit it.
+## Important runtime note
+
+The plugin/skill provides production directions and reference documentation. The optional B1 local code-rendering engine is a separate installation layer and is **not yet bundled or verified** in this repository. It requires Node.js 20+, FFmpeg/FFprobe, `@napi-rs/canvas`, `sharp`, and its complete licensed font/reference asset set. Do not interpret a successful plugin installation as proof that the B1 renderer is ready.
+
+## Claude Web skill ZIP
+
+A separate ZIP is not required for the marketplace installation route above. A compact standalone skill ZIP may be added later if a direct Skills upload route is needed.
+
+## Safety and licensing
+
+Review the repository before installing. Do not upload API keys, private credentials, personal recordings, or large optional audio collections. Upstream MIT license text is preserved at `licenses/UPSTREAM-MIT-LICENSE.txt`; individual sample media, fonts and audio assets retain their own licensing requirements.
