@@ -1,47 +1,40 @@
 # TON STICKMAN CINEMATIC
 
-A user-owned project for producing cinematic 2D stickman videos with Claude.
+A user-owned Claude skill/plugin project for cinematic 2D stickman production.
 
-## Goals
+## Selected visual directions
 
-- Support Claude Code installation from this public repository.
-- Provide a separate, size-limited package for Claude Web skill upload.
-- Preserve the selected visual styles: A2, A3, A7, and A8.
-- Keep large optional audio libraries separate from the core installation.
-- Keep source assets, references, and scripts organized and documented.
+- **A2** — Modern Beanie Zeke (Modern Studio Tech / Cinematic Story)
+- **A3** — Prehistoric Hand-Drawn / Dark Comedy
+- **A7** — Rubber Hose Animation
+- **A8** — Studio Ghibli-inspired hand-drawn animation direction
+- **B1** — Minimal Line Art / hand-drawn stickman (local code-rendered workflow)
 
-## Project status
+## Current repository contents
 
-**Bootstrap repository created.** The original upstream skill and its dependencies have not yet been copied into this repository. The next step is to audit the source files, license notices, required references, and runtime dependencies before importing or adapting anything.
+- Main skill instructions and upstream reference notes.
+- Curated production guides for all five selected directions.
+- A7 prompt-lock and workflow manifests.
+- B1 approval/evidence manifests.
+- Runtime dependency declaration and upstream MIT license notice.
 
-## Planned layout
+## Build status
 
-```text
-.
-├── .claude-plugin/
-│   └── plugin.json
-├── skills/
-│   └── ton-stickman-cinematic/
-│       ├── SKILL.md
-│       ├── references/
-│       ├── scripts/
-│       └── assets/
-├── installers/
-│   ├── claude-code/
-│   └── claude-web/
-├── tools/
-├── README.md
-├── INSTALL.md
-└── LICENSE
-```
+**Core documentation and selected-style manifests are imported. Runtime packaging and installation validation are still in progress.** This repository is not yet a verified one-click installation.
+
+The upstream B1 runtime requires Node.js 20+, FFmpeg/FFprobe, `@napi-rs/canvas`, `sharp`, and licensed font/reference assets. Some original media assets are binary files and cannot be imported through the current text-only GitHub editing route. The build process must include and verify those assets before B1 can be called fully operational.
 
 ## Installation targets
 
-- **Claude Code:** install the plugin/skill from this repository.
-- **Claude Web:** upload a generated skill ZIP or plugin archive that complies with the current upload limits.
+1. Claude Code plugin/skill installed from this repository.
+2. A separate compact ZIP for Claude Web skill upload.
 
-The Web package will be built separately and checked for archive size, file count, manifest structure, and required skill files.
+The Claude Web ZIP must be checked for file count, archive size, manifest structure, and required references before release.
 
-## Important
+## License and third-party material
 
-Do not upload API keys, private credentials, personal recordings, or large optional audio collections to this public repository. Confirm the license and redistribution rights of every imported asset before publishing it.
+The upstream project license is preserved at [licenses/UPSTREAM-MIT-LICENSE.txt](licenses/UPSTREAM-MIT-LICENSE.txt). This does not automatically grant redistribution rights to every bundled media file, font, sample video, or third-party audio asset. Keep optional audio libraries and user-provided media out of public releases unless their individual rights are verified.
+
+## Repository
+
+https://github.com/tton471-ux/ton-stickman-cinematic
