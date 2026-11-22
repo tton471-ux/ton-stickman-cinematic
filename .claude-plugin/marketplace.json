@@ -1,0 +1,21 @@
+{
+  "name": "ton-stickman-cinematic-marketplace",
+  "owner": {
+    "name": "Ton Banna"
+  },
+  "metadata": {
+    "description": "Selected cinematic 2D stickman production skill: A2, A3, A7, A8 and B1.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "ton-stickman-cinematic",
+      "source": "./",
+      "description": "Cinematic stickman production directions and workflows for A2, A3, A7, A8 and B1.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Ton Banna"
+      }
+    }
+  ]
+}
