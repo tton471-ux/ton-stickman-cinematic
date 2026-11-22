@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install Python media dependencies
+        run: python -m pip install numpy==2.0.2 Pillow==11.3.0 opencv-python-headless==4.13.0.92
       - name: Install FFmpeg
         run: |
           sudo apt-get update
@@ -44,15 +46,18 @@ jobs:
           upstream_skill="$source_dir/skills/directing-stickman-videos"
           test -d "$upstream_skill/assets"
           test -d "$upstream_skill/references"
+          test -d "$upstream_skill/examples"
           # The checked-in paths are symlinks to the separately vendored upstream-source tree.
           # Replace the links in the CI workspace with the pinned upstream directories.
           rm -f "$target_dir/assets" "$target_dir/references"
-          mkdir -p "$target_dir/assets" "$target_dir/references"
+          mkdir -p "$target_dir/assets" "$target_dir/references" "$target_dir/examples"
           cp -a "$upstream_skill/assets/." "$target_dir/assets/"
           cp -a "$upstream_skill/references/." "$target_dir/references/"
+          cp -a "$upstream_skill/examples/." "$target_dir/examples/"
           echo "Restored pinned upstream assets and references from $UPSTREAM_COMMIT"
           echo "Asset files: $(find "$target_dir/assets" -type f | wc -l)"
           echo "Reference files: $(find "$target_dir/references" -type f | wc -l)"
+          echo "Example files: $(find "$target_dir/examples" -type f | wc -l)"
       - name: Install upstream Node dependencies
         working-directory: skills/ton-stickman-cinematic/vendor/upstream
         run: npm ci
