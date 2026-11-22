@@ -1,0 +1,23 @@
+name: TON Stickman upstream tests
+
+on:
+  push:
+    branches: [complete-edition-integration]
+  pull_request:
+    branches: [main]
+
+jobs:
+  upstream-node-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/ton-stickman-cinematic/vendor/upstream
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: skills/ton-stickman-cinematic/vendor/upstream/package-lock.json
+      - run: npm ci
+      - run: npm test
