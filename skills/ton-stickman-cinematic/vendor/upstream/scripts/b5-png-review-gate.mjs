@@ -10,7 +10,6 @@ import {validateVisualPlan} from './b5-visual-review.mjs';
 import {assertB5RevisionInvariants, buildB5RevisionRequirements, validateB5RevisionObservationCoverage} from './b5-png-revision.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const sharp = createRequire(import.meta.url)('sharp');
 const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const text = value => typeof value === 'string' && value.trim().length > 0;
@@ -110,6 +109,7 @@ function masking(current, file) {
     treatment: 'opaque diagnostic concealment, not authentic source pixels'};
 }
 async function neutralPng(current, descriptor, derivation) {
+  const sharp = createRequire(import.meta.url)('sharp');
   const [left, top, width, height] = current.plan.stage_region;
   const pipeline = sharp(path.join(current.binding.frames_dir, descriptor.source_name)).extract({left, top, width, height});
   const masks = derivation?.masks || [];
