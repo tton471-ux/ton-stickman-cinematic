@@ -7,22 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawnSync} from 'node:child_process';
-import {createCanvas, GlobalFonts} from '@napi-rs/canvas';
-
-// Use an explicitly registered font for deterministic native-canvas fixtures.
-// System aliases such as "sans-serif" can resolve differently across CI runners.
-const fixtureFontCandidates = [
-  '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
-  '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
-  '/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf',
-  'C:/Windows/Fonts/arial.ttf',
-  '/System/Library/Fonts/Supplemental/Arial.ttf',
-];
-for (const fontPath of fixtureFontCandidates) {
-  if (fs.existsSync(fontPath)) {
-    try { GlobalFonts.registerFromPath(fontPath); } catch {}
-  }
-}
+import {createCanvas} from '@napi-rs/canvas';
 import {planB4Typography,checkB4TypographyPaint,buildB4TypographyEvidence,verifyB4TypographyReview} from '../scripts/b4-typography-review.mjs';
 
 const ffmpeg=process.env.FFMPEG||'ffmpeg',ffprobe=process.env.FFPROBE||'ffprobe';
@@ -42,7 +27,7 @@ function drawFixture(p,{staticBody=false,staticCaption=false,movingBackground=fa
     if(show('body-title')){
       const x=subtleSettle?15:staticBody?20:t<.25?5+60*t:t<.5?20-(t-.25)*20:15;
       ctx.save();if(subtleSettle){const scale=staticBody?1:1+.035*(1-Math.min(1,t/.5));ctx.translate(130,70);ctx.scale(scale,scale);ctx.translate(-130,-70);}
-      ctx.globalAlpha=staticBody||subtleSettle?1:Math.min(1,.4+t*2.4);ctx.font='bold 25px DejaVu Sans';ctx.fillStyle='#f9ebd4';ctx.fillText('A REAL CHANGE',x+15,70);ctx.restore();
+      ctx.globalAlpha=staticBody||subtleSettle?1:Math.min(1,.4+t*2.4);ctx.font='bold 25px sans-serif';ctx.fillStyle='#f9ebd4';ctx.fillText('A REAL CHANGE',x+15,70);ctx.restore();
     }
     for(const [i,c] of p.captions.entries())if(t>=c.start&&t<c.end&&show('caption-'+i)){
       const q=staticCaption===true||staticCaption===i?1:Math.min(1,(t-c.start)/.16);ctx.globalAlpha=q;ctx.font='11px sans-serif';ctx.fillStyle='#f9f5ed';ctx.fillText(c.text,55,164+(1-q)*3);ctx.globalAlpha=1;
