@@ -169,7 +169,7 @@ function* typographyPaintMoments(p,{draw}) {
     const frames=Object.fromEntries(PHASES.map(k=>[k,snapshot(draw(at(k),{focusIds:m.layer_ids}))]));
     const without=snapshot(draw(at('settled'),{focusIds:['__b4_typography_empty__']}));
     const ink=diff(frames.settled,without,m.region),entry_mid=diff(frames.entry,frames.mid,m.region),mid_settled=diff(frames.mid,frames.settled,m.region);
-    need(ink.mean>.0008 && ink.fraction>.002,'moment '+m.id+' has no visible isolated text in its declared region');
+    need(ink.mean>.0008 && ink.fraction>.002,'moment '+m.id+' has no visible isolated text in its declared region (ink='+JSON.stringify(ink)+', region='+JSON.stringify(m.region)+', frame='+JSON.stringify({width:frames.settled.width,height:frames.settled.height})+')');
     if(m.kind==='environment_marking') {
       const phases=[];
       for(const phase of PHASES){const isolated=frames[phase],empty=snapshot(draw(at(phase),{focusIds:['__b4_typography_empty__']})),glyph=diff(isolated,empty,m.region),composed=snapshot(draw(at(phase))),removed=snapshot(draw(at(phase),{omitIds:m.layer_ids})),visibility=diff(composed,removed,m.region);
