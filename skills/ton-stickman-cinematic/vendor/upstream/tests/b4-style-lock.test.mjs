@@ -19,6 +19,10 @@ const fixture = t => {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'b4-install-test-'));
   const installed = path.join(temporary, 'skills/directing-stickman-videos');
   fs.cpSync(root, installed, {recursive: true, filter: source => !source.split(path.sep).includes('node_modules')});
+  // The relocated Skill is tested with the host's already-installed runtime
+  // dependencies, just as a user installation supplies them beside the Skill.
+  // Keep dependencies outside the copied Skill tree so path portability is still tested.
+  fs.symlinkSync(path.join(root, 'node_modules'), path.join(temporary, 'node_modules'), 'dir');
   t.after(() => fs.rmSync(temporary, {recursive: true, force: true}));
   return installed;
 };
