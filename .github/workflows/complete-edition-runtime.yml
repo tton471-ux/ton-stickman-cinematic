@@ -1,4 +1,4 @@
-name: Complete Edition Runtime Tests # run latest B4 subtle animation baseline diagnostics
+name: Complete Edition Runtime Tests # run B4 whole-frame versus region diagnostics
 
 on:
   workflow_dispatch:
