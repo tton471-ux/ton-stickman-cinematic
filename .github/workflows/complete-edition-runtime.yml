@@ -1,4 +1,4 @@
-name: Complete Edition Runtime Tests # run B4 whole-frame versus region diagnostics
+name: Complete Edition Runtime Tests # run B4 native-size pixel diagnostics
 
 on:
   workflow_dispatch:
