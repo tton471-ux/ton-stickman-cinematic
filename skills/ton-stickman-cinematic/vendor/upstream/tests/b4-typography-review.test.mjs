@@ -55,7 +55,10 @@ test('registry covers body text and every complete timed caption; missing body p
 });
 
 test('text-isolated diagnostics reject static body, static captions and background motion as substitutes',()=>{
-  const p=project();assert.equal(checkB4TypographyPaint(p,{draw:drawFixture(p)}).status,'paint_diagnostic_pass');
+  const p=project(),probe=drawFixture(p)(.5,{focusIds:['body-title']}).getContext('2d').getImageData(0,0,320,180).data;
+  let brightPixels=0;for(let i=0;i<probe.length;i+=4)if(probe[i]>220&&probe[i+1]>200&&probe[i+2]>170)brightPixels++;
+  assert.ok(brightPixels>0,'synthetic body-title painter must produce visible pixels before diagnostics');
+  assert.equal(checkB4TypographyPaint(p,{draw:drawFixture(p)}).status,'paint_diagnostic_pass');
   assert.throws(()=>checkB4TypographyPaint(p,{draw:drawFixture(p,{staticBody:true})}),/body-moment.*micro-animation/);
   assert.throws(()=>checkB4TypographyPaint(p,{draw:drawFixture(p,{staticBody:true,movingBackground:true})}),/body-moment.*micro-animation/);
   assert.throws(()=>checkB4TypographyPaint(p,{draw:drawFixture(p,{staticCaption:true})}),/caption-0.*micro-animation/);
