@@ -147,6 +147,12 @@ const diagnosticMoments=plan=>[...plan.moments,...plan.caption_diagnostics];
 // sampled frame grew memory by megabytes per frame on long films (issue #129).
 const snapshotCanvases=new Map();
 function snapshot(canvas, width=320) {
+  // Read native-size fixture frames directly. Besides avoiding a needless
+  // canvas-to-canvas copy, this keeps isolated paint diagnostics deterministic
+  // on small synthetic canvases in CI.
+  if (canvas.width === width) {
+    return {width:canvas.width,height:canvas.height,data:canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height).data};
+  }
   const {createCanvas}=canvasAPI(),height=Math.round(width*canvas.height/canvas.width),key=width+'x'+height;
   let c=snapshotCanvases.get(key); if(!c)snapshotCanvases.set(key,c=createCanvas(width,height)); else c.getContext('2d').clearRect(0,0,width,height);
   c.getContext('2d').drawImage(canvas,0,0,c.width,c.height);
