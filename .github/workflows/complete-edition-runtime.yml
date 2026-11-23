@@ -1,4 +1,4 @@
-name: Complete Edition Runtime Tests # run B4 native-size pixel diagnostics
+name: Complete Edition Runtime Tests # assert B4 synthetic title paint before diagnostic
 
 on:
   workflow_dispatch:
