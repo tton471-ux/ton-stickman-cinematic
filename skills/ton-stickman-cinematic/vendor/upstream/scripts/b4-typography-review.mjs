@@ -150,7 +150,7 @@ function snapshot(canvas, width=320) {
   // Read native-size fixture frames directly. Besides avoiding a needless
   // canvas-to-canvas copy, this keeps isolated paint diagnostics deterministic
   // on small synthetic canvases in CI.
-  if (canvas.width === width) {
+  if (canvas.width === width && typeof canvas.getContext === 'function') {
     return {width:canvas.width,height:canvas.height,data:canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height).data};
   }
   const {createCanvas}=canvasAPI(),height=Math.round(width*canvas.height/canvas.width),key=width+'x'+height;
