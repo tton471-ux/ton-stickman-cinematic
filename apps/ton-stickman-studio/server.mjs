@@ -7,21 +7,40 @@ import {spawn} from 'node:child_process';
 import crypto from 'node:crypto';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const PORT = Number(process.env.TON_STUDIO_PORT || 4177);
-const HOST = '127.0.0.1';
+const PORT = Number(process.env.PORT || process.env.TON_STUDIO_PORT || 4177);
+const HOST = process.env.TON_STUDIO_HOST || '127.0.0.1';
 const ROOT = path.resolve(HERE, '../..');
 const RUNTIME = process.env.TON_RUNTIME_ROOT || path.join(ROOT, 'skills/ton-stickman-cinematic/vendor/upstream');
 const SCRIPT = path.join(RUNTIME, 'scripts/autopilot.mjs');
 const PROJECTS = path.resolve(process.env.TON_PROJECTS_DIR || path.join(os.homedir(), 'Documents/TonStickmanProjects'));
+const AUTH_USER = process.env.TON_STUDIO_AUTH_USER || '';
+const AUTH_PASSWORD = process.env.TON_STUDIO_AUTH_PASSWORD || '';
+const REMOTE = !['127.0.0.1','localhost','::1'].includes(HOST);
+if (REMOTE && (!AUTH_USER || !AUTH_PASSWORD)) throw new Error('TON_STUDIO_AUTH_USER and TON_STUDIO_AUTH_PASSWORD are required when binding to a non-loopback host');
+const ALLOWED_ORIGINS = new Set((process.env.TON_STUDIO_ALLOWED_ORIGINS || '').split(',').map(x=>x.trim()).filter(Boolean));
 const jobs = new Map();
 const MIME = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.ico':'image/x-icon'};
 
 fs.mkdirSync(PROJECTS, {recursive:true});
-const send = (res, status, value, type='application/json; charset=utf-8') => {
-  res.writeHead(status, {'content-type':type,'cache-control':'no-store','x-content-type-options':'nosniff'});
+const send = (res, status, value, type='application/json; charset=utf-8', extra={}) => {
+  res.writeHead(status, {'content-type':type,'cache-control':'no-store','x-content-type-options':'nosniff',...extra});
   res.end(type.startsWith('application/json') ? JSON.stringify(value) : value);
 };
 const safeName = value => String(value || '').trim().replace(/[^a-zA-Z0-9_-]/g, '-').replace(/-+/g,'-').slice(0,48);
+function constantTimeEqual(a,b) {
+  const left=Buffer.from(String(a)), right=Buffer.from(String(b));
+  return left.length===right.length && crypto.timingSafeEqual(left,right);
+}
+function authorized(req) {
+  if (!REMOTE) return true;
+  const header=String(req.headers.authorization||'');
+  if (!header.startsWith('Basic ')) return false;
+  let decoded;
+  try { decoded=Buffer.from(header.slice(6),'base64').toString('utf8'); } catch { return false; }
+  const split=decoded.indexOf(':');
+  if (split<0) return false;
+  return constantTimeEqual(decoded.slice(0,split),AUTH_USER) && constantTimeEqual(decoded.slice(split+1),AUTH_PASSWORD);
+}
 function projectPath(value) {
   if (typeof value !== 'string' || !value.trim()) throw new Error('Project path is required');
   const target = path.resolve(value);
@@ -31,7 +50,7 @@ function projectPath(value) {
 }
 function readBody(req) {
   return new Promise((resolve,reject) => {
-    let data=''; req.on('data',chunk => { data += chunk; if(data.length > 64*1024) reject(new Error('Request too large')); });
+    let data=''; req.on('data',chunk => { data += chunk; if(data.length > 64*1024) { reject(new Error('Request too large')); req.destroy(); } });
     req.on('end',()=>{ try { resolve(data ? JSON.parse(data) : {}); } catch { reject(new Error('Invalid JSON')); } });
     req.on('error',reject);
   });
@@ -49,11 +68,15 @@ function runJob(command,args) {
 }
 function assertAllowedOrigin(req) {
   const origin=req.headers.origin;
-  if (origin && ![`http://127.0.0.1:${PORT}`,`http://localhost:${PORT}`].includes(origin)) throw new Error('Cross-origin request blocked');
+  if (!origin) return;
+  const own=`https://${req.headers.host}`;
+  const defaults=[`http://127.0.0.1:${PORT}`,`http://localhost:${PORT}`,own];
+  if (![...defaults,...ALLOWED_ORIGINS].includes(origin)) throw new Error('Cross-origin request blocked');
 }
 const server=http.createServer(async(req,res)=>{
   try {
-    const url=new URL(req.url,'http://127.0.0.1');
+    if (!authorized(req)) return send(res,401,{error:'Authentication required'},'application/json; charset=utf-8',REMOTE?{'www-authenticate':'Basic realm="TON Stickman Studio", charset="UTF-8"'}:{});
+    const url=new URL(req.url,`http://${req.headers.host||'127.0.0.1'}`);
     if(req.method==='GET' && url.pathname==='/api/health') return send(res,200,{ok:true,name:'TON Stickman Studio',version:'0.1.0',projectsDir:PROJECTS});
     if(req.method==='GET' && url.pathname==='/api/styles') return send(res,200,{modelEngine:['A1','A2','A3','A4','A5','A6','A7','A8'],codeEngine:['B1','B2','B3','B4','B5','B6','B7'],preferred:['A2','A3','A7','A8','B1']});
     if(req.method==='GET' && url.pathname==='/api/projects') {
@@ -98,8 +121,9 @@ const server=http.createServer(async(req,res)=>{
     }
     if(req.method==='GET') {
       const rel=url.pathname==='/'?'index.html':decodeURIComponent(url.pathname.slice(1));
-      const file=path.resolve(HERE,'web',rel);
-      if(!file.startsWith(path.resolve(HERE,'web')+path.sep)) return send(res,403,{error:'Forbidden'});
+      const webRoot=path.resolve(HERE,'web');
+      const file=path.resolve(webRoot,rel);
+      if(!file.startsWith(webRoot+path.sep)) return send(res,403,{error:'Forbidden'});
       if(!fs.existsSync(file)||!fs.statSync(file).isFile()) return send(res,404,{error:'Not found'});
       return send(res,200,fs.readFileSync(file),MIME[path.extname(file)]||'application/octet-stream');
     }
