@@ -1,0 +1,85 @@
+name: Complete Edition Runtime Tests # verify B4 phase proof against previous typography phase
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - complete-edition-integration
+    paths:
+      - "skills/ton-stickman-cinematic/vendor/upstream/**"
+      - ".github/workflows/complete-edition-runtime.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "skills/ton-stickman-cinematic/vendor/upstream/**"
+      - ".github/workflows/complete-edition-runtime.yml"
+
+jobs:
+  upstream-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: skills/ton-stickman-cinematic/vendor/upstream/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Python media dependencies
+        run: python3 -m pip install numpy==2.0.2 Pillow==11.3.0 opencv-python-headless==4.13.0.92
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core fonts-liberation2
+          fc-match sans-serif
+      - name: Restore pinned upstream assets and references
+        env:
+          UPSTREAM_REPOSITORY: https://github.com/kaomei/stickman-video-director.git
+          UPSTREAM_COMMIT: 9431d3707bde52ba8eb17f31886b0892c763eeba
+        run: |
+          set -euo pipefail
+          source_dir="$RUNNER_TEMP/stickman-upstream"
+          target_dir="$GITHUB_WORKSPACE/skills/ton-stickman-cinematic/vendor/upstream"
+          git init "$source_dir"
+          git -C "$source_dir" remote add origin "$UPSTREAM_REPOSITORY"
+          git -C "$source_dir" fetch --depth 1 origin "$UPSTREAM_COMMIT"
+          git -C "$source_dir" checkout --detach FETCH_HEAD
+          test "$(git -C "$source_dir" rev-parse HEAD)" = "$UPSTREAM_COMMIT"
+          upstream_skill="$source_dir/skills/directing-stickman-videos"
+          test -d "$upstream_skill/assets"
+          test -d "$upstream_skill/references"
+          test -d "$upstream_skill/examples"
+          # The checked-in paths are symlinks to the separately vendored upstream-source tree.
+          # Replace the links in the CI workspace with the pinned upstream directories.
+          rm -f "$target_dir/assets" "$target_dir/references"
+          mkdir -p "$target_dir/assets" "$target_dir/references" "$target_dir/examples"
+          cp -a "$upstream_skill/assets/." "$target_dir/assets/"
+          cp -a "$upstream_skill/references/." "$target_dir/references/"
+          cp -a "$upstream_skill/examples/." "$target_dir/examples/"
+          echo "Restored pinned upstream assets and references from $UPSTREAM_COMMIT"
+          echo "Asset files: $(find "$target_dir/assets" -type f | wc -l)"
+          echo "Reference files: $(find "$target_dir/references" -type f | wc -l)"
+          echo "Example files: $(find "$target_dir/examples" -type f | wc -l)"
+          test -s "$target_dir/examples/b5-mei-event-relay/README.md"
+          test -s "$target_dir/examples/b5-mei-event-relay/new-story-stage.cjs"
+          test -s "$target_dir/examples/b5-mei-event-relay/stage.cjs"
+      - name: Install upstream Node dependencies
+        working-directory: skills/ton-stickman-cinematic/vendor/upstream
+        run: npm ci
+      - name: Run upstream Node test suite
+        working-directory: skills/ton-stickman-cinematic/vendor/upstream
+        run: npm test
+      - name: Run upstream Python tests
+        working-directory: skills/ton-stickman-cinematic/vendor/upstream
+        run: python3 -m unittest discover -s tests -p '*_test.py'
+      - name: Report toolchain versions
+        run: |
+          node --version
+          npm --version
+          python3 --version
+          ffmpeg -version | head -n 1

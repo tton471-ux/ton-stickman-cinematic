@@ -1,0 +1,13 @@
+name: TON Stickman legacy upstream tests
+
+# Retired duplicate runner. Complete Edition Runtime Tests is the single
+# authoritative CI workflow and validates the pinned submodule, examples,
+# assets, Node suite and Python suite together.
+on:
+  workflow_dispatch:
+
+jobs:
+  retired:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Use Complete Edition Runtime Tests for authoritative validation."

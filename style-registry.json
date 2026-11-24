@@ -1,0 +1,48 @@
+{
+  "edition": "complete",
+  "project": "TON STICKMAN CINEMATIC",
+  "upstream": {
+    "repository": "kaomei/stickman-video-director",
+    "branch": "main",
+    "commit": "9431d3707bde52ba8eb17f31886b0892c763eeba",
+    "license": "MIT",
+    "license_file": "licenses/UPSTREAM-MIT-LICENSE.txt"
+  },
+  "style_families": {
+    "model_engine": [
+      {"id":"A1","name":"Classic Minimalist","variants":["Light","Dark"],"selected_by_user":false},
+      {"id":"A2","name":"Modern Beanie","variants":["2A Modern Studio Tech","2B Cinematic Story"],"selected_by_user":true},
+      {"id":"A3","name":"Prehistoric Hand-Drawn / Dark Comedy","selected_by_user":true},
+      {"id":"A4","name":"Cozy Storytelling","selected_by_user":false},
+      {"id":"A5","name":"Historical Cartoon","selected_by_user":false},
+      {"id":"A6","name":"Amber Noir","selected_by_user":false},
+      {"id":"A7","name":"Rubber Hose Animation","selected_by_user":true},
+      {"id":"A8","name":"Studio Ghibli Style","selected_by_user":true}
+    ],
+    "code_engine": [
+      {"id":"B1","name":"Minimal Line Art","selected_by_user":true},
+      {"id":"B2","name":"Colorful Hand-Drawn","selected_by_user":false},
+      {"id":"B3","name":"Retro TV","selected_by_user":false},
+      {"id":"B4","name":"Survival Thriller","selected_by_user":false},
+      {"id":"B5","name":"Avatar Explainer","selected_by_user":false},
+      {"id":"B6","name":"Dynamic Meme","selected_by_user":false},
+      {"id":"B7","name":"Pixel Theater","selected_by_user":false}
+    ]
+  },
+  "integration_policy": {
+    "preserve_upstream_style_ids_and_names": true,
+    "preserve_existing_ton_files": true,
+    "import_text_source_before_binary_assets": true,
+    "keep_large_optional_audio_library_separate": true,
+    "verify_each_asset_license_individually": true,
+    "do_not_claim_runtime_operational_until_tests_pass": true,
+    "keep_user_selected_styles_as_favorites": ["A2","A3","A7","A8","B1"]
+  },
+  "status": {
+    "repository_inventory_verified": true,
+    "complete_style_registry_created": true,
+    "full_upstream_import": false,
+    "binary_assets_imported": false,
+    "runtime_tests_passed": false
+  }
+}

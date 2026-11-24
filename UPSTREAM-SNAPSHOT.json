@@ -1,0 +1,50 @@
+{
+  "repository": "kaomei/stickman-video-director",
+  "branch": "main",
+  "commit": "9431d3707bde52ba8eb17f31886b0892c763eeba",
+  "license": "MIT",
+  "counts": {
+    "repository_blobs": 2082,
+    "skill_root_blobs": 1932,
+    "references": 75,
+    "scripts": 57,
+    "tests": 70,
+    "skill_assets": 1698
+  },
+  "style_routes": {
+    "model_engine": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8"
+    ],
+    "code_engine": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B7"
+    ]
+  },
+  "imported_into_ton": {
+    "complete_source_mirror": false,
+    "scripts": true,
+    "tests": true,
+    "all_references": true,
+    "binary_assets": false,
+    "binary_assets_source": "pinned Git submodule at vendor/upstream-source",
+    "optional_audio_library": false,
+    "optional_audio_library_note": "Available only inside the pinned upstream source; not integrated into TON production defaults."
+  },
+  "validation": {
+    "runtime_tests_passed": false,
+    "latest_observed_ci": "legacy Node 20 workflow run failed; authoritative Node 22 workflow updated to validate full examples/assets and Python dependencies",
+    "production_render_qa": false
+  }
+}
