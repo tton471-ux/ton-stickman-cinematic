@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 $installer = Get-ChildItem "$PSScriptRoot/../dist" -Filter "*.exe" | Where-Object { $_.Name -notmatch "uninstaller" } | Select-Object -First 1
 if (-not $installer) { throw "Windows installer artifact was not produced" }
 Start-Process -FilePath $installer.FullName -ArgumentList "/S" -Wait
-$appPath = Join-Path $env:ProgramFiles "TON Stickman Cinematic/TON Stickman Cinematic.exe"
+$appPath = Join-Path $env:LOCALAPPDATA "Programs/TON Stickman Cinematic/TON Stickman Cinematic.exe"
 if (-not (Test-Path $appPath)) { throw "Installed desktop executable not found at $appPath" }
 $app = Start-Process -FilePath $appPath -PassThru
 try {
