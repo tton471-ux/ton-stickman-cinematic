@@ -1,4 +1,4 @@
-name: Complete Edition Runtime Tests # deterministic B4 synthetic glyph fixture
+name: Complete Edition Runtime Tests # B4 snapshot handles decoded image and canvas inputs
 
 on:
   workflow_dispatch:
