@@ -1,4 +1,4 @@
-name: Complete Edition Runtime Tests # B4 snapshot handles decoded image and canvas inputs
+name: Complete Edition Runtime Tests # verify B4 phase proof against previous typography phase
 
 on:
   workflow_dispatch:
