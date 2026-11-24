@@ -1,0 +1,60 @@
+name: TON Stickman Studio
+
+on:
+  push:
+    branches: [studio-desktop-web-foundation]
+    paths:
+      - "apps/ton-stickman-studio/**"
+      - "skills/ton-stickman-cinematic/vendor/upstream/**"
+      - "vendor/upstream-source"
+      - ".github/workflows/ton-stickman-studio.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/ton-stickman-studio/**"
+      - "skills/ton-stickman-cinematic/vendor/upstream/**"
+      - "vendor/upstream-source"
+      - ".github/workflows/ton-stickman-studio.yml"
+
+jobs:
+  studio-api-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test Studio local API
+        working-directory: apps/ton-stickman-studio
+        run: npm test
+
+  windows-installer:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install FFmpeg
+        run: choco install ffmpeg -y --no-progress
+      - name: Install upstream runtime dependencies
+        working-directory: skills/ton-stickman-cinematic/vendor/upstream
+        run: npm ci
+      - name: Install Studio packaging dependencies
+        working-directory: apps/ton-stickman-studio
+        run: npm install --no-audit --no-fund
+      - name: Build Windows installer
+        working-directory: apps/ton-stickman-studio
+        run: npm run dist:win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ton-stickman-cinematic-windows-x64
+          path: apps/ton-stickman-studio/dist/*.exe
+          if-no-files-found: error
