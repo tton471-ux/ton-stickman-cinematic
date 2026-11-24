@@ -30,3 +30,22 @@ test('Studio local API smoke test',async t=>{
  const listing=await (await fetch(base+'/api/projects')).json();
  assert.deepEqual(listing.items,[]);
 });
+
+
+test('cloud binding requires credentials and protects every route with Basic Auth',async t=>{
+ const port=await freePort(), projects=fs.mkdtempSync(path.join(os.tmpdir(),'ton-studio-cloud-test-'));
+ const child=spawn(process.execPath,[path.join(app,'server.mjs')],{cwd:app,env:{...process.env,PORT:String(port),TON_STUDIO_HOST:'0.0.0.0',TON_STUDIO_AUTH_USER:'ton-test',TON_STUDIO_AUTH_PASSWORD:'secret-test',TON_PROJECTS_DIR:projects},stdio:'ignore'});
+ const base=`http://127.0.0.1:${port}`;
+ t.after(()=>{child.kill();fs.rmSync(projects,{recursive:true,force:true})});
+ let ready=false;
+ for(let i=0;i<60;i++){try{const r=await fetch(base+'/api/health');if(r.status===401){ready=true;break}}catch{}await new Promise(r=>setTimeout(r,100))}
+ assert.equal(ready,true,'cloud server should start and challenge unauthenticated requests');
+ const denied=await fetch(base+'/');
+ assert.equal(denied.status,401,'static UI must also require authentication');
+ const token=Buffer.from('ton-test:secret-test').toString('base64');
+ const health=await fetch(base+'/api/health',{headers:{authorization:`Basic ${token}`}});
+ assert.equal(health.status,200);
+ assert.equal((await health.json()).ok,true);
+ const wrong=await fetch(base+'/api/health',{headers:{authorization:'Basic dG9uLXRlc3Q6d3Jvbmc='}});
+ assert.equal(wrong.status,401);
+});
