@@ -73,7 +73,7 @@ const server=http.createServer(async(req,res)=>{
         const style=String(body.style||'B1');
         const ratio=String(body.ratio||'16:9');
         if(!name) return send(res,400,{error:'Enter a project name'});
-        if(!['B1','B2','B3','B4','B5','B6'].includes(style)) return send(res,400,{error:'Unsupported code-engine style'});
+        if(!['B1','B2','B3','B4','B6'].includes(style)) return send(res,400,{error:'Unsupported code-engine style'});
         if(!['16:9','9:16'].includes(ratio)) return send(res,400,{error:'Unsupported aspect ratio'});
         const target=projectPath(path.join(PROJECTS,name));
         if(fs.existsSync(target)) return send(res,409,{error:'A project with this name already exists'});
