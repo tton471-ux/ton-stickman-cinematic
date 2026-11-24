@@ -75,6 +75,7 @@ function assertAllowedOrigin(req) {
 }
 const server=http.createServer(async(req,res)=>{
   try {
+    if (req.method==='GET' && req.url==='/healthz') return send(res,200,{ok:true});
     if (!authorized(req)) return send(res,401,{error:'Authentication required'},'application/json; charset=utf-8',REMOTE?{'www-authenticate':'Basic realm="TON Stickman Studio", charset="UTF-8"'}:{});
     const url=new URL(req.url,`http://${req.headers.host||'127.0.0.1'}`);
     if(req.method==='GET' && url.pathname==='/api/health') return send(res,200,{ok:true,name:'TON Stickman Studio',version:'0.1.0',projectsDir:PROJECTS});
