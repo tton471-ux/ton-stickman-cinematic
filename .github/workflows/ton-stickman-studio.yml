@@ -75,6 +75,10 @@ jobs:
       - name: Build Windows installer
         working-directory: apps/ton-stickman-studio
         run: npm run dist:win
+      - name: Smoke test installed Windows application
+        working-directory: apps/ton-stickman-studio
+        shell: pwsh
+        run: ./scripts/smoke-installed.ps1
       - uses: actions/upload-artifact@v4
         with:
           name: ton-stickman-cinematic-windows-x64
