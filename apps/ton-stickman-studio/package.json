@@ -41,6 +41,10 @@
       {
         "from": "../../skills/ton-stickman-cinematic/vendor/upstream",
         "to": "runtime/upstream"
+      },
+      {
+        "from": "vendor/ffmpeg",
+        "to": "ffmpeg"
       }
     ],
     "win": {
