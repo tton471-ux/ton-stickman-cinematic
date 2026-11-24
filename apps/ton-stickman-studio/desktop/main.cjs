@@ -8,7 +8,7 @@ const port=Number(process.env.TON_STUDIO_PORT||4177);
 function waitForServer(attempt=0){return new Promise((resolve,reject)=>{const req=http.get(`http://127.0.0.1:${port}/api/health`,res=>{res.resume();resolve()});req.on('error',()=>{if(attempt>60)return reject(new Error('Core Engine did not start'));setTimeout(()=>waitForServer(attempt+1).then(resolve,reject),300)})})}
 async function createWindow(){
  const packaged=app.isPackaged;
- const serverFile=packaged?path.join(process.resourcesPath,'app.asar','server.mjs'):path.join(__dirname,'..','server.mjs');
+ const serverFile=packaged?path.join(process.resourcesPath,'studio','server.mjs'):path.join(__dirname,'..','server.mjs');
  const runtimeRoot=packaged?path.join(process.resourcesPath,'runtime','upstream'):path.resolve(__dirname,'../../../skills/ton-stickman-cinematic/vendor/upstream');
  if(!fs.existsSync(serverFile))throw new Error('Studio server is missing');
  serverProcess=spawn(process.execPath,[serverFile],{env:{...process.env,ELECTRON_RUN_AS_NODE:'1',TON_STUDIO_PORT:String(port),TON_RUNTIME_ROOT:runtimeRoot},stdio:'ignore',windowsHide:true});
