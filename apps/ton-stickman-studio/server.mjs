@@ -26,6 +26,7 @@ function projectPath(value) {
   if (typeof value !== 'string' || !value.trim()) throw new Error('Project path is required');
   const target = path.resolve(value);
   if (target !== PROJECTS && !target.startsWith(PROJECTS + path.sep)) throw new Error('Projects must stay inside the TON projects folder');
+  if (fs.existsSync(target)) { const real=fs.realpathSync(target); const root=fs.realpathSync(PROJECTS); if(real!==root && !real.startsWith(root+path.sep)) throw new Error('Project symlink escapes the TON projects folder'); }
   return target;
 }
 function readBody(req) {
@@ -40,7 +41,6 @@ function runJob(command,args) {
   const job = {id,command,status:'running',startedAt:new Date().toISOString(),finishedAt:null,exitCode:null,stdout:'',stderr:''};
   jobs.set(id,job);
   const child = spawn(process.execPath,[SCRIPT,command,...args],{cwd:RUNTIME,env:{...process.env,FORCE_COLOR:'0'},windowsHide:true});
-  child.stdout.on('data,bad',()=>{}); // replaced below
   child.stdout.on('data',chunk=>{job.stdout=(job.stdout+chunk.toString()).slice(-120000);});
   child.stderr.on('data',chunk=>{job.stderr=(job.stderr+chunk.toString()).slice(-120000);});
   child.on('error',error=>{job.status='failed';job.stderr += error.message;job.finishedAt=new Date().toISOString();});
