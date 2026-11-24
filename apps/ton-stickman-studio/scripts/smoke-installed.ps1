@@ -26,5 +26,7 @@ try {
   if ($failed) { throw "Runtime doctor reported failed checks: $($failed.Name -join ', ')" }
   Write-Host "Installed app smoke test passed; bundled runtime, fonts, canvas, Sharp and FFmpeg are available."
 } finally {
+  $listener = Get-NetTCPConnection -LocalPort 4177 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
+  if ($listener) { Stop-Process -Id $listener.OwningProcess -Force -ErrorAction SilentlyContinue }
   if ($app -and -not $app.HasExited) { Stop-Process -Id $app.Id -Force }
 }
