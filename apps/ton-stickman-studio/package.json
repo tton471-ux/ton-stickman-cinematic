@@ -1,0 +1,31 @@
+{
+  "name": "ton-stickman-studio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TON Stickman Cinematic shared local Core Engine for web and Windows desktop",
+  "type": "module",
+  "main": "desktop/main.cjs",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node server.mjs",
+    "desktop": "electron .",
+    "dist:win": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "36.3.2",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "com.tonbanna.stickmancinematic",
+    "productName": "TON Stickman Cinematic",
+    "directories": { "output": "dist" },
+    "files": ["server.mjs", "web/**/*", "desktop/**/*", "package.json"],
+    "extraResources": [
+      { "from": "../../skills/ton-stickman-cinematic/vendor/upstream", "to": "runtime/upstream" },
+      { "from": "../../skills/ton-stickman-cinematic/runtime/package.json", "to": "runtime/package.json" }
+    ],
+    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }] },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true }
+  }
+}
