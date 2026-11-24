@@ -56,8 +56,16 @@ jobs:
             $origin = Join-Path $source $folder
             if (Test-Path $origin) { Copy-Item (Join-Path $origin "*") $destination -Recurse -Force }
           }
-      - name: Install B6 Python media dependencies
-        run: python -m pip install numpy==2.0.2 Pillow==11.3.0 opencv-python-headless==4.13.0.92
+      - name: Bundle FFmpeg binaries
+        shell: pwsh
+        run: |
+          $ffmpeg = Get-ChildItem "C:\\ProgramData\\chocolatey\\lib\\ffmpeg" -Recurse -Filter ffmpeg.exe | Select-Object -First 1
+          if (-not $ffmpeg) { throw "ffmpeg.exe was not found after installation" }
+          $bin = $ffmpeg.Directory.FullName
+          $destination = Join-Path $env:GITHUB_WORKSPACE "apps/ton-stickman-studio/vendor/ffmpeg"
+          New-Item -ItemType Directory -Path $destination -Force | Out-Null
+          Copy-Item (Join-Path $bin "ffmpeg.exe") $destination -Force
+          Copy-Item (Join-Path $bin "ffprobe.exe") $destination -Force
       - name: Install upstream runtime dependencies
         working-directory: skills/ton-stickman-cinematic/vendor/upstream
         run: npm ci
