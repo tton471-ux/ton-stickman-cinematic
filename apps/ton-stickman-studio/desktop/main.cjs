@@ -11,7 +11,7 @@ async function createWindow(){
  const serverFile=packaged?path.join(process.resourcesPath,'studio','server.mjs'):path.join(__dirname,'..','server.mjs');
  const runtimeRoot=packaged?path.join(process.resourcesPath,'runtime','upstream'):path.resolve(__dirname,'../../../skills/ton-stickman-cinematic/vendor/upstream');
  if(!fs.existsSync(serverFile))throw new Error('Studio server is missing');
- serverProcess=spawn(process.execPath,[serverFile],{env:{...process.env,ELECTRON_RUN_AS_NODE:'1',TON_STUDIO_PORT:String(port),TON_RUNTIME_ROOT:runtimeRoot},stdio:'ignore',windowsHide:true});
+ serverProcess=spawn(process.execPath,[serverFile],{env:{...process.env,ELECTRON_RUN_AS_NODE:'1',TON_STUDIO_PORT:String(port),TON_RUNTIME_ROOT:runtimeRoot,...(packaged?{FFMPEG:path.join(process.resourcesPath,'ffmpeg','ffmpeg.exe'),FFPROBE:path.join(process.resourcesPath,'ffmpeg','ffprobe.exe')}:{})},stdio:'ignore',windowsHide:true});
  try{await waitForServer()}catch(e){dialog.showErrorBox('TON Stickman Cinematic',e.message);app.quit();return}
  windowRef=new BrowserWindow({width:1440,height:940,minWidth:980,minHeight:680,backgroundColor:'#0c1018',title:'TON Stickman Cinematic',webPreferences:{contextIsolation:true,nodeIntegration:false,sandbox:true}});
  await windowRef.loadURL(`http://127.0.0.1:${port}`);
