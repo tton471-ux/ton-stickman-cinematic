@@ -12,6 +12,8 @@ on:
       - "skills/ton-stickman-cinematic/vendor/upstream/**"
       - "vendor/upstream-source"
       - ".github/workflows/ton-stickman-studio.yml"
+      - "render.yaml"
+      - ".dockerignore"
   pull_request:
     branches: [main]
     paths:
