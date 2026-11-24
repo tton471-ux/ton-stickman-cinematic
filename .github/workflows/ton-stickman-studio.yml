@@ -1,5 +1,9 @@
 name: TON Stickman Studio
 
+concurrency:
+  group: ton-stickman-studio-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [studio-desktop-web-foundation]
