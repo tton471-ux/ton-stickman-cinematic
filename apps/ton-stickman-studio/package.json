@@ -41,10 +41,6 @@
       {
         "from": "../../skills/ton-stickman-cinematic/vendor/upstream",
         "to": "runtime/upstream"
-      },
-      {
-        "from": "../../vendor/upstream-source",
-        "to": "runtime/upstream-source"
       }
     ],
     "win": {
