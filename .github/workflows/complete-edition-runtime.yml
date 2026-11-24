@@ -1,4 +1,4 @@
-name: Complete Edition Runtime Tests # assert B4 synthetic title paint before diagnostic
+name: Complete Edition Runtime Tests # deterministic B4 synthetic glyph fixture
 
 on:
   workflow_dispatch:
