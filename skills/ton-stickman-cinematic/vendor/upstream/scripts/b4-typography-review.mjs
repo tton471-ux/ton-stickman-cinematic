@@ -245,10 +245,10 @@ async function checkFile(p,source,draw,ffmpeg) {
   // The alternative keeps the current background and substitutes only the
   // isolated typography difference, so a moving picture cannot supply proof.
   const phase_matches=[];
-  for(const m of diagnosticMoments(plan).filter(m=>m.kind!=='environment_marking')) for(const [phase,next] of [['entry','mid'],['mid','settled']]) {
+  for(const m of diagnosticMoments(plan).filter(m=>m.kind!=='environment_marking')) for(const [phase,previous] of [['mid','entry'],['settled','mid']]) {
     const t=m.frame_indices[phase]/p.fps,actualImage=await loadImage(command(ffmpeg,['-v','error','-ss',String(t),'-i',source,'-frames:v','1','-c:v','png','-threads:v','1','-f','image2pipe','pipe:1']));
     await draw.prepare?.([t,m.frame_indices[next]/p.fps]);
-    const actual=snapshot(actualImage),authored=snapshot(draw(t)),isolated=snapshot(draw(t,{focusIds:m.layer_ids})),other=snapshot(draw(m.frame_indices[next]/p.fps,{focusIds:m.layer_ids}));
+    const actual=snapshot(actualImage),authored=snapshot(draw(t)),isolated=snapshot(draw(t,{focusIds:m.layer_ids})),other=snapshot(draw(m.frame_indices[previous]/p.fps,{focusIds:m.layer_ids}));
     let currentError=0,alternativeError=0,count=0;
     const r=m.region,x0=Math.floor(r.x/4),y0=Math.floor(r.y/4),x1=Math.min(actual.width,Math.ceil((r.x+r.w)/4)),y1=Math.min(actual.height,Math.ceil((r.y+r.h)/4));
     for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++) {
