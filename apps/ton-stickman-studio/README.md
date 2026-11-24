@@ -52,3 +52,16 @@ The installer is emitted under `dist/`.
 The API binds to loopback, blocks cross-origin POST requests, limits JSON request size, and only exposes an allowlist of runtime commands. Project paths are restricted to the local projects directory. Do not expose this server to a LAN or the public internet.
 
 The Windows installer build is not considered complete until the CI artifact exists and a smoke test confirms the installed app launches, detects its bundled FFmpeg/runtime, and can complete a representative preview/render.
+
+## Online web test deployment (Render)
+
+This repository includes a Docker image and a Render Blueprint for a private online test instance.
+
+1. Connect the repository to Render and create the service from the repository's `render.yaml`.
+2. Set the prompted `TON_STUDIO_AUTH_USER` and `TON_STUDIO_AUTH_PASSWORD` values to unique credentials. Do not commit these values or share them in chat.
+3. Keep the persistent disk mounted at `/var/data`; project files are stored under `/var/data/TonStickmanProjects`.
+4. Wait for the service health check at `/healthz`, then open the generated HTTPS URL and sign in with the credentials configured in Render.
+
+The public service binds to `0.0.0.0` only when both authentication variables are present. All UI and API routes require HTTP Basic Authentication; only the minimal container probe `/healthz` is public. The Render service uses HTTPS at the edge and a persistent disk for project files. Do not disable authentication or expose a local development server directly to the internet.
+
+The first online release is a single-instance test workspace. Jobs are held in process memory, so a restart clears job history; project files remain on the persistent disk. Do not scale this service to multiple instances until job state and shared storage are moved to durable shared services.
