@@ -27,10 +27,16 @@ function drawFixture(p,{staticBody=false,staticCaption=false,movingBackground=fa
     if(show('body-title')){
       const x=subtleSettle?15:staticBody?20:t<.25?5+60*t:t<.5?20-(t-.25)*20:15;
       ctx.save();if(subtleSettle){const scale=1+(staticBody?0:.035*Math.min(1,t/.5));ctx.translate(130,70);ctx.scale(scale,scale);ctx.translate(-130,-70);}
-      ctx.globalAlpha=staticBody||subtleSettle?1:Math.min(1,.4+t*2.4);ctx.font='bold 25px sans-serif';ctx.fillStyle='#f9ebd4';ctx.fillText('A REAL CHANGE',x+15,70);ctx.restore();
+      ctx.globalAlpha=staticBody||subtleSettle?1:Math.min(1,.4+t*2.4);ctx.font='bold 25px sans-serif';ctx.fillStyle='#f9ebd4';ctx.fillText('A REAL CHANGE',x+15,70);
+      // Deterministic synthetic glyph strokes keep this pixel-gate fixture
+      // independent of optional system-font availability on CI runners.
+      for(let i=0;i<13;i++){const h=12+(i%4)*3;ctx.fillRect(x+15+i*12,70-h,6,h);}
+      ctx.restore();
     }
     for(const [i,c] of p.captions.entries())if(t>=c.start&&t<c.end&&show('caption-'+i)){
-      const q=staticCaption===true||staticCaption===i?1:Math.min(1,(t-c.start)/.16);ctx.globalAlpha=q;ctx.font='11px sans-serif';ctx.fillStyle='#f9f5ed';ctx.fillText(c.text,55,164+(1-q)*3);ctx.globalAlpha=1;
+      const q=staticCaption===true||staticCaption===i?1:Math.min(1,(t-c.start)/.16),baseline=164+(1-q)*3;ctx.globalAlpha=q;ctx.font='11px sans-serif';ctx.fillStyle='#f9f5ed';ctx.fillText(c.text,55,baseline);
+      for(let j=0;j<22;j++){const h=5+(j%3)*2;ctx.fillRect(55+j*8,baseline-h,4,h);}
+      ctx.globalAlpha=1;
     }
     return canvas;
   };
